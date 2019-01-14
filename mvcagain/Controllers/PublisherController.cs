@@ -37,7 +37,7 @@ namespace mvcagain.Controllers
                 var message = validationResult.Errors.First().ErrorMessage;
             }
 
-
+            return new HttpStatusCodeResult(200);
         }
     }
 }
