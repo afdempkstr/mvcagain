@@ -38,20 +38,10 @@ namespace mvcagain.Controllers
         public string Create(Book book)
         {
             var db = new BookstoreDb();
-            string createMessage = "Book was Created !!!";
 
-            try
-            {
-                db.Create(book);
-                return createMessage;
-            }
-            catch (SqlException e)
-            {
-                createMessage = $"<p>Error Creating Book</p><p>{e.Message}</p>";
-                
-            }
+            db.Create(book);
 
-            return createMessage;
+            return db.RunOnConnectionError ?? "Book was Created !!!";
 
         }
 
