@@ -13,6 +13,8 @@ namespace mvcagain.Models
 
         public string Author { get; set; }
         
+        public decimal Price { get; set; }
+
         public int PublicationYear { get; set; }
 
         public int PublisherId { get; set; }

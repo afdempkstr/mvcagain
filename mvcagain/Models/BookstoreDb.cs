@@ -21,8 +21,26 @@ namespace mvcagain.Models
             }
         }
 
-        public void Create(Book x) { throw new NotImplementedException(); }
-        public void Create(Publisher x) { throw new NotImplementedException(); }
+        public void Create(Book x)
+        {
+            string BookCreation = "INSERT INTO Books (Title, Author, Price, PublicationYear, PublisherId) VALUES (@Title,@Author, @Price,@PublicationYear,@PublisherId);";
+            SqlConnection dbcon = new SqlConnection();
+
+            using (dbcon)
+            {
+                var createBook = dbcon.Query(BookCreation, new {Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
+            }
+        }
+        public void Create(Publisher x)
+        {
+            string publisherCreation = "INSERT INTO Publishers (Name) VALUES (@Name);";
+            SqlConnection dbcon = new SqlConnection();
+
+            using (dbcon)
+            {
+                var createPublisher = dbcon.Query(publisherCreation, new { Name=x.Name });
+            }
+        }
 
 
         public void Update(Book x) { throw new NotImplementedException(); }
@@ -31,10 +49,28 @@ namespace mvcagain.Models
         public void Update(Publisher x) { throw new NotImplementedException(); }
 
 
-        public void Delete(Book x) { throw new NotImplementedException(); }
+        public void DeleteBook(int x)
+        {
+            string deletion = "DELETE FROM Books WHERE Id=@id";
+            SqlConnection dbcon = new SqlConnection();
+
+            using (dbcon)
+            {
+                var bookDeletion = dbcon.Query(deletion, new { id = x });
+            }
+        }
 
 
-        public void Delete(Publisher x) { throw new NotImplementedException(); }
+        public void DeletePublisher(int x)
+        {
+            string deletion = "DELETE FROM Publishers WHERE Id=@id";
+            SqlConnection dbcon = new SqlConnection();
+
+            using (dbcon)
+            {
+                var publisherDeletion = dbcon.Query(deletion, new { id = x });
+            }
+        }
 
 
 
