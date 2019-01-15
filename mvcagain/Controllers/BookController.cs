@@ -33,18 +33,13 @@ namespace mvcagain.Controllers
 
         // POST: Book/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Book book)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            var db = new BookstoreDb();
+            db.Create(book);
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
+
         }
 
         // GET: Book/Edit/5
