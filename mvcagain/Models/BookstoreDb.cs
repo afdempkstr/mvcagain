@@ -21,6 +21,22 @@ namespace mvcagain.Models
             }
         }
 
+        public void Create(Book x) { throw new NotImplementedException(); }
+        public void Create(Publisher x) { throw new NotImplementedException(); }
+
+
+        public void Update(Book x) { throw new NotImplementedException(); }
+
+
+        public void Update(Publisher x) { throw new NotImplementedException(); }
+
+
+        public void Delete(Book x) { throw new NotImplementedException(); }
+
+
+        public void Delete(Publisher x) { throw new NotImplementedException(); }
+
+
 
     }
 }
