@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using mvcagain.Models;
 
 namespace mvcagain.Controllers
 {
@@ -11,7 +12,11 @@ namespace mvcagain.Controllers
         // GET: Book
         public ActionResult Index()
         {
-            return View();
+            var db = new BookstoreDb();
+
+            var books = db.GetBooks();
+
+            return View(books.ToList());
         }
 
         // GET: Book/Details/5

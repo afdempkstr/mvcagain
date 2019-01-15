@@ -28,7 +28,7 @@ namespace mvcagain.Models
 
             using (dbcon)
             {
-                var createBook = dbcon.Query(BookCreation, new {Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
+                var createBook = dbcon.Query(BookCreation, new { Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
             }
         }
         public void Create(Publisher x)
@@ -38,15 +38,45 @@ namespace mvcagain.Models
 
             using (dbcon)
             {
-                var createPublisher = dbcon.Query(publisherCreation, new { Name=x.Name });
+                var createPublisher = dbcon.Query(publisherCreation, new { Name = x.Name });
             }
         }
 
 
-        public void Update(Book x) { throw new NotImplementedException(); }
+        public void Update(Book book)
+        {
+            string bookUpdate = "UPDATE Books SET Title = @Title, Author=@Author, Price=@Price, PublicationYear = @PublicationYear, PublisherId = @PublisherId WHERE Id = @Id";
+            SqlConnection dbcon = new SqlConnection();
+
+            using (dbcon)
+            {
+                var updateBook = dbcon.Query(bookUpdate, new
+                {
+                    Title = book.Title,
+                    Author = book.Author,
+                    Price = book.Price,
+                    PublicationYear = book.PublicationYear,
+                    PublisherId = book.PublisherId
+                });
+            }
 
 
-        public void Update(Publisher x) { throw new NotImplementedException(); }
+        }
+
+
+        public void Update(Publisher publisher)
+        {
+            string publisherUpdate = "UPDATE Publishers SET Name = @Name WHERE Id = @Id";
+            SqlConnection dbcon = new SqlConnection();
+
+            using (dbcon)
+            {
+                var updatePublisher = dbcon.Query(publisherUpdate, new
+                {
+                    Name = publisher.Name
+                });
+            }
+        }
 
 
         public void DeleteBook(int x)
@@ -72,7 +102,14 @@ namespace mvcagain.Models
             }
         }
 
+        public IEnumerable<Book> GetBooks()
+        {
+            using (var dbcon = new SqlConnection(_connectionString))
+            {
 
-
+                return dbcon.Query<Book>("select * from books");
+            }
+            
+        }
     }
 }
