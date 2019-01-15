@@ -22,22 +22,16 @@ namespace mvcagain.Models
             }
         }
 
-        public string Create(Book x)
+        public void Create(Book x)
         {
             string BookCreation = "INSERT INTO Books (Title, Author, Price, PublicationYear, PublisherId) VALUES (@Title,@Author, @Price,@PublicationYear,@PublisherId);";
-            SqlConnection dbcon = new SqlConnection();
-            try
+
+
+            using (SqlConnection dbcon = new SqlConnection(_connectionString))
             {
-                using (dbcon)
-                {
-                    var createBook = dbcon.Query(BookCreation, new { Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
-                    return "true";
-                }
+                var createBook = dbcon.Query(BookCreation, new { Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
             }
-            catch (DbException e)
-            {
-                return e.Message;
-            }
+
         }
         public void Create(Publisher x)
         {
@@ -117,7 +111,7 @@ namespace mvcagain.Models
 
                 return dbcon.Query<Book>("select * from books");
             }
-            
+
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using mvcagain.Models;
+
 
 namespace mvcagain.Controllers
 {
@@ -33,12 +35,23 @@ namespace mvcagain.Controllers
 
         // POST: Book/Create
         [HttpPost]
-        public ActionResult Create(Book book)
+        public string Create(Book book)
         {
             var db = new BookstoreDb();
-            db.Create(book);
+            string createMessage = "Book was Created !!!";
 
-            return RedirectToAction("Index");
+            try
+            {
+                db.Create(book);
+                return createMessage;
+            }
+            catch (SqlException e)
+            {
+                createMessage = $"<p>Error Creating Book</p><p>{e.Message}</p>";
+                
+            }
+
+            return createMessage;
 
         }
 
