@@ -15,10 +15,10 @@ namespace mvcagain.Models
         void Update(Publisher x);
 
 
-        void Delete(Book x);
+        void DeleteBook(int x);
 
 
-        void Delete(Publisher x);
+        void DeletePublisher(int x);
 
         IEnumerable<Publisher> GetPublishers();
     }
