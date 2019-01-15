@@ -7,7 +7,7 @@ using Dapper;
 
 namespace mvcagain.Models
 {
-    public class BookstoreDb
+    public class BookstoreDb : IBookstoreDb
     {
         private string _connectionString = Properties.Settings.Default.connectionString;
 
