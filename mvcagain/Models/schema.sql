@@ -16,6 +16,7 @@ CREATE TABLE [dbo].[Books](
 (
 	[Id] ASC
 )
+)
 GO
 /****** Object:  Table [dbo].[Publishers]    Script Date: 15/1/2019 6:35:15 μμ ******/
 SET ANSI_NULLS ON
