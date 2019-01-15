@@ -4,21 +4,21 @@ namespace mvcagain.Models
 {
     public interface IBookstoreDb
     {
-        public void Create(Book x);
+        void Create(Book x);
 
-        public void Create(Publisher x);
-
-
-        public void Update(Book x);
+        void Create(Publisher x);
 
 
-        public void Update(Publisher x);
+        void Update(Book x);
 
 
-        public void Delete(Book x);
+        void Update(Publisher x);
 
 
-        public void Delete(Publisher x);
+        void Delete(Book x);
+
+
+        void Delete(Publisher x);
 
         IEnumerable<Publisher> GetPublishers();
     }
