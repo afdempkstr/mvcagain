@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -21,14 +22,21 @@ namespace mvcagain.Models
             }
         }
 
-        public void Create(Book x)
+        public string Create(Book x)
         {
             string BookCreation = "INSERT INTO Books (Title, Author, Price, PublicationYear, PublisherId) VALUES (@Title,@Author, @Price,@PublicationYear,@PublisherId);";
             SqlConnection dbcon = new SqlConnection();
-
-            using (dbcon)
+            try
             {
-                var createBook = dbcon.Query(BookCreation, new { Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
+                using (dbcon)
+                {
+                    var createBook = dbcon.Query(BookCreation, new { Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
+                    return "true";
+                }
+            }
+            catch (DbException e)
+            {
+                return e.Message;
             }
         }
         public void Create(Publisher x)
