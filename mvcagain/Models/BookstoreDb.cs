@@ -23,16 +23,6 @@ namespace mvcagain.Models
             return publishers;
         }
 
-        public IEnumerable<Book> GetBooks()
-        {
-            using (var dbcon = new SqlConnection(_connectionString))
-            {
-                //dbcon.Open();
-
-                return dbcon.Query<Book>("select * from Books");
-            }
-        }
-
         public void Create(Book x)
         {
             RunOnConnection((dbCon) =>
@@ -82,7 +72,7 @@ namespace mvcagain.Models
             RunOnConnection((dbCon) =>
             {
                 dbCon.Query("DELETE FROM Books WHERE Id=@id",
-                    new { id = x.GetValueOrDefault() });s
+                    new { id = x.GetValueOrDefault() });
             });
         }
 
