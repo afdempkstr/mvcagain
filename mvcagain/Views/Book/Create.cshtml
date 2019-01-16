@@ -1,4 +1,4 @@
-﻿@model mvcagain.Models.Book
+﻿@model IEnumerable<mvcagain.Models.Publisher>
 
 @{
     ViewBag.Title = "Create";
@@ -26,9 +26,12 @@
             Publication Year :<br>
             <input type="text" name="PublicationYear"><br>
             Publisher :<br>
-            <input type="text" name="Publisher"><br>
-            Publisher Id :<br>
-            <input type="text"><br>
+            <select name="PublisherId">
+                @foreach (var publisher in Model)
+                {
+                    <option value="@publisher.Id">@publisher.Name</option>
+                }
+            </select>
             <input type="submit" value="Create">
         </form>
     </div>

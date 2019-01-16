@@ -17,13 +17,13 @@
         <h3>Are you sure you want to delete @Html.DisplayFor(model => model.Name)?</h3>
 
         <br>
+        @using (Html.BeginForm("Delete", "Publisher", FormMethod.Post))
+        {
         <div class="form-actions no-color">
             <input type="submit" value="Delete" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
+        }
     </div>
 </body>
 </html>
-
-
-Message Input

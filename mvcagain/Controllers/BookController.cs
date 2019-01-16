@@ -12,6 +12,8 @@ namespace mvcagain.Controllers
 {
     public class BookController : Controller
     {
+        private BookstoreDb _db = new BookstoreDb();
+
         // GET: Book
         public ActionResult Index()
         {
@@ -31,7 +33,11 @@ namespace mvcagain.Controllers
         // GET: Book/Create
         public ActionResult Create()
         {
-            return View();
+            var publishers = _db.GetPublishers();
+
+
+
+            return View(publishers);
         }
 
         // POST: Book/Create
