@@ -25,7 +25,7 @@ namespace mvcagain.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=.;Database=bookstore;User Id=sa;Password=1234")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=.;Database=bookstore;Trusted_Connection=True;")]
         public string connectionString {
             get {
                 return ((string)(this["connectionString"]));

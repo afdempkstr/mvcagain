@@ -21,12 +21,22 @@ namespace mvcagain.Models
             }
         }
 
+        public IEnumerable<Book> GetBooks()
+        {
+            using (var dbcon = new SqlConnection(_connectionString))
+            {
+                //dbcon.Open();
+
+                return dbcon.Query<Book>("select * from Books");
+            }
+        }
+
         public void Create(Book x)
         {
             string BookCreation = "INSERT INTO Books (Title, Author, Price, PublicationYear, PublisherId) VALUES (@Title,@Author, @Price,@PublicationYear,@PublisherId);";
-            SqlConnection dbcon = new SqlConnection();
+            //SqlConnection dbcon = new SqlConnection();
 
-            using (dbcon)
+            using (var dbcon = new SqlConnection(_connectionString))
             {
                 var createBook = dbcon.Query(BookCreation, new {Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
             }
@@ -34,9 +44,9 @@ namespace mvcagain.Models
         public void Create(Publisher x)
         {
             string publisherCreation = "INSERT INTO Publishers (Name) VALUES (@Name);";
-            SqlConnection dbcon = new SqlConnection();
+            //SqlConnection dbcon = new SqlConnection();
 
-            using (dbcon)
+            using (var dbcon = new SqlConnection(_connectionString))
             {
                 var createPublisher = dbcon.Query(publisherCreation, new { Name=x.Name });
             }
@@ -49,14 +59,14 @@ namespace mvcagain.Models
         public void Update(Publisher x) { throw new NotImplementedException(); }
 
 
-        public void DeleteBook(int x)
+        public void DeleteBook(int? x)
         {
             string deletion = "DELETE FROM Books WHERE Id=@id";
-            SqlConnection dbcon = new SqlConnection();
+           // SqlConnection dbcon = new SqlConnection();
 
-            using (dbcon)
+            using (var dbcon = new SqlConnection(_connectionString))
             {
-                var bookDeletion = dbcon.Query(deletion, new { id = x });
+                var bookDeletion = dbcon.Query(deletion, new { id = x.GetValueOrDefault() });
             }
         }
 
@@ -64,9 +74,9 @@ namespace mvcagain.Models
         public void DeletePublisher(int x)
         {
             string deletion = "DELETE FROM Publishers WHERE Id=@id";
-            SqlConnection dbcon = new SqlConnection();
+           // SqlConnection dbcon = new SqlConnection();
 
-            using (dbcon)
+            using (var dbcon = new SqlConnection(_connectionString))
             {
                 var publisherDeletion = dbcon.Query(deletion, new { id = x });
             }
