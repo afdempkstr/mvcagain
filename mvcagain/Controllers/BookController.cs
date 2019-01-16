@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mvcagain.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -68,9 +69,16 @@ namespace mvcagain.Controllers
         }
 
         // GET: Book/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            var db = new BookstoreDb();
+
+            db.DeleteBook(id.GetValueOrDefault());
+
+            var books = db.GetBooks().Where(i => i.Id == id).FirstOrDefault();
+
+            return View(books);
+          
         }
 
         // POST: Book/Delete/5
@@ -79,7 +87,7 @@ namespace mvcagain.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+
 
                 return RedirectToAction("Index");
             }
