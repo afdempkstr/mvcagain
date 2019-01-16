@@ -15,7 +15,7 @@ namespace mvcagain.Models
         void Update(Publisher x);
 
 
-        void DeleteBook(int x);
+        void DeleteBook(int? x);
 
 
         void DeletePublisher(int x);
