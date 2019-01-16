@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -10,69 +11,110 @@ namespace mvcagain.Models
     public class BookstoreDb : IBookstoreDb
     {
         private string _connectionString = Properties.Settings.Default.connectionString;
+        public string RunOnConnectionError { get; private set; }
 
         public IEnumerable<Publisher> GetPublishers()
         {
-            using (var dbcon = new SqlConnection(_connectionString))
+            IEnumerable<Publisher> publishers = null;
+            RunOnConnection((dbCon) =>
             {
-                //dbcon.Open();
-
-                return dbcon.Query<Publisher>("select * from publishers");
-            }
+                publishers = dbCon.Query<Publisher>("select * from publishers");
+            });
+            return publishers;
         }
 
         public void Create(Book x)
         {
-            string BookCreation = "INSERT INTO Books (Title, Author, Price, PublicationYear, PublisherId) VALUES (@Title,@Author, @Price,@PublicationYear,@PublisherId);";
-            SqlConnection dbcon = new SqlConnection();
-
-            using (dbcon)
+            RunOnConnection((dbCon) =>
             {
-                var createBook = dbcon.Query(BookCreation, new {Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
-            }
+                dbCon.Query("INSERT INTO Books (Title, Author, Price, PublicationYear, PublisherId) VALUES (@Title,@Author, @Price,@PublicationYear,@PublisherId);",
+                    new { Title = x.Title, Author = x.Author, Price = x.Price, PublicationYear = x.PublicationYear, PublisherId = x.PublisherId });
+            });
         }
         public void Create(Publisher x)
         {
-            string publisherCreation = "INSERT INTO Publishers (Name) VALUES (@Name);";
-            SqlConnection dbcon = new SqlConnection();
-
-            using (dbcon)
+            RunOnConnection((dbCon) =>
             {
-                var createPublisher = dbcon.Query(publisherCreation, new { Name=x.Name });
-            }
+                dbCon.Query("INSERT INTO Publishers (Name) VALUES (@Name);",
+                    new { Name = x.Name });
+            });
         }
 
 
-        public void Update(Book x) { throw new NotImplementedException(); }
+        public void Update(Book book)
+        {
 
+            RunOnConnection((dbCon) =>
+            {
+                dbCon.Query("UPDATE Books SET Title = @Title, Author=@Author, Price=@Price, PublicationYear = @PublicationYear, PublisherId = @PublisherId WHERE Id = @Id", new
+                {
+                    Title = book.Title,
+                    Author = book.Author,
+                    Price = book.Price,
+                    PublicationYear = book.PublicationYear,
+                    PublisherId = book.PublisherId
+                });
+            });
 
-        public void Update(Publisher x) { throw new NotImplementedException(); }
+        }
+        public void Update(Publisher publisher)
+        {
 
+            RunOnConnection((dbCon) =>
+            {
+                dbCon.Query("UPDATE Publishers SET Name = @Name WHERE Id = @Id",
+                    new { Name = publisher.Name });
+            });
+        }
 
         public void DeleteBook(int x)
         {
-            string deletion = "DELETE FROM Books WHERE Id=@id";
-            SqlConnection dbcon = new SqlConnection();
-
-            using (dbcon)
+            RunOnConnection((dbCon) =>
             {
-                var bookDeletion = dbcon.Query(deletion, new { id = x });
-            }
+                dbCon.Query("DELETE FROM Books WHERE Id=@id",
+                    new { id = x });
+            });
         }
-
 
         public void DeletePublisher(int x)
         {
-            string deletion = "DELETE FROM Publishers WHERE Id=@id";
-            SqlConnection dbcon = new SqlConnection();
-
-            using (dbcon)
+            RunOnConnection((dbCon) =>
             {
-                var publisherDeletion = dbcon.Query(deletion, new { id = x });
-            }
+                dbCon.Query("DELETE FROM Publishers WHERE Id = @id",
+                    new { id = x });
+            });
         }
 
+        public IEnumerable<Book> GetBooks()
+        {
+            IEnumerable<Book> books = null;
 
+            RunOnConnection((dbCon) =>
+            {
+                books = dbCon.Query<Book>("select * from books");
+            });
 
+            return books;
+        }
+
+        public bool RunOnConnection(Action<SqlConnection> execute)
+        {
+            bool success = true;
+            RunOnConnectionError = null;
+
+            using (var dbcon = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    execute(dbcon);
+                }
+                catch (DbException e)
+                {
+                    RunOnConnectionError = e.Message;
+                    success = false;
+                }
+            }
+            return success;
+        }
     }
 }
