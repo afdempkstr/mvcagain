@@ -1,9 +1,12 @@
 ﻿using mvcagain.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using mvcagain.Models;
+
 
 namespace mvcagain.Controllers
 {
@@ -33,18 +36,14 @@ namespace mvcagain.Controllers
 
         // POST: Book/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public string Create(Book book)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            var db = new BookstoreDb();
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            db.Create(book);
+
+            return db.RunOnConnectionError ?? "Book was Created !!!";
+
         }
 
         // GET: Book/Edit/5

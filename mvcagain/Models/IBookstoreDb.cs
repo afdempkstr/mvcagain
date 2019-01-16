@@ -21,5 +21,6 @@ namespace mvcagain.Models
         void DeletePublisher(int x);
 
         IEnumerable<Publisher> GetPublishers();
+        IEnumerable<Book> GetBooks();
     }
 }
