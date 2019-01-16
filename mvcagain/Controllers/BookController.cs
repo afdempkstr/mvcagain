@@ -35,9 +35,9 @@ namespace mvcagain.Controllers
         {
             var publishers = _db.GetPublishers();
 
-
-
-            return View(publishers);
+            var list = new SelectList(publishers, "Id", "Name");
+            
+            return View(list);
         }
 
         // POST: Book/Create

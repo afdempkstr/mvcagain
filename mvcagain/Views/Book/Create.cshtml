@@ -1,4 +1,4 @@
-﻿@model IEnumerable<mvcagain.Models.Publisher>
+﻿@model SelectList
 
 @{
     ViewBag.Title = "Create";
@@ -26,12 +26,13 @@
             Publication Year :<br>
             <input type="text" name="PublicationYear"><br>
             Publisher :<br>
-            <select name="PublisherId">
+            @*<select name="PublisherId">
                 @foreach (var publisher in Model)
                 {
                     <option value="@publisher.Id">@publisher.Name</option>
                 }
-            </select>
+            </select>*@
+            @Html.DropDownList("PublisherId", Model)
             <input type="submit" value="Create">
         </form>
     </div>
